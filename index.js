@@ -69,7 +69,7 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
           time = time.red
         }
 
-        var msg = indent + status + specNamei + time;
+        var msg = indent + status + specName + time;
 
         result.log.forEach(function(log) {
             if (reporterCfg.maxLogLines) {
