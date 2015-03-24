@@ -37,45 +37,55 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
   this.currentSuite = [];
   this.writeSpecMessage = function(status) {
     return (function(browser, result) {
-      var suite = result.suite
-      var indent = "  ";
-      suite.forEach(function(value, index) {
-        if (index >= this.currentSuite.length || this.currentSuite[index] != value) {
-          if (index == 0) {
-            this.writeCommonMsg('\n');
-          }
-          this.writeCommonMsg(indent + value + '\n');
-          this.currentSuite = [];
+        var suite = result.suite
+        var indent = "  ";
+        suite.forEach(function(value, index) {
+            if (index >= this.currentSuite.length || this.currentSuite[index] != value) {
+              if (index == 0) {
+                this.writeCommonMsg('\n');
+              }
+              this.writeCommonMsg(indent + value + '\n');
+              this.currentSuite = [];
+            }
+            indent += "  ";
+          }, this);
+        this.currentSuite = suite;
+
+        var specName = result.description;
+        //TODO: add timing information
+
+        if(this.USE_COLORS) {
+          if(result.skipped) specName = specName.cyan;
+          else if(!result.success) specName = specName.red;
         }
-        indent += "  ";
-      }, this);
-      this.currentSuite = suite;
 
-      var specName = result.description;
-      //TODO: add timing information
+        var time = " (" + result.time + " ms)"
 
-      if(this.USE_COLORS) {
-        if(result.skipped) specName = specName.cyan;
-        else if(!result.success) specName = specName.red;
-      }
-
-      var msg = indent + status + specName;
-
-      result.log.forEach(function(log) {
-        if (reporterCfg.maxLogLines) {
-          log = log.split('\n').slice(0, reporterCfg.maxLogLines).join('\n');
+        if (result.time > 20 && result.time < 40) {
+          time = time.yellow
+        } else if (result.time < 20) {
+          time = time.green
+        } else if (result.time > 40) {
+          time = time.red
         }
-        msg += '\n' + formatError(log, '\t');
-      });
 
-      this.writeCommonMsg(msg + '\n');
+        var msg = indent + status + specNamei + time;
 
-      // other useful properties
-      browser.id;
-      browser.fullName;
-      result.time;
-      result.skipped;
-      result.success;
+        result.log.forEach(function(log) {
+            if (reporterCfg.maxLogLines) {
+              log = log.split('\n').slice(0, reporterCfg.maxLogLines).join('\n');
+            }
+            msg += '\n' + formatError(log, '\t');
+        });
+
+        this.writeCommonMsg(msg + '\n');
+
+        // other useful properties
+        browser.id;
+        browser.fullName;
+        result.time;
+        result.skipped;
+        result.success;
     }).bind(this);
   };
 
@@ -89,7 +99,7 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
       this.write(this.LOG_MULTI_BROWSER, browser, type.toUpperCase(), this.USE_COLORS ? log.cyan : log);
     }
   };
-  
+
   function noop(){}
 
   var reporterCfg = config.specReporter || {};
