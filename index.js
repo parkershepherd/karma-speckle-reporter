@@ -37,8 +37,10 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
   this.currentSuite = [];
   this.writeSpecMessage = function(status) {
     return (function(browser, result) {
-        var suite = result.suite
+
+        var suite  = result.suite
         var indent = "  ";
+
         suite.forEach(function(value, index) {
             if (index >= this.currentSuite.length || this.currentSuite[index] != value) {
               if (index == 0) {
@@ -49,6 +51,7 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
             }
             indent += "  ";
           }, this);
+
         this.currentSuite = suite;
 
         var specName = result.description;
@@ -61,12 +64,14 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
 
         var time = " (" + result.time + " ms)"
 
-        if (result.time > 20 && result.time < 40) {
-          time = time.yellow
-        } else if (result.time < 20) {
-          time = time.green
-        } else if (result.time > 40) {
-          time = time.red
+        if (this.USE_COLORS) {
+          if (result.time > 20 && result.time < 40) {
+            time = time.yellow
+          } else if (result.time < 20) {
+            time = time.green
+          } else if (result.time > 40) {
+            time = time.red
+          }
         }
 
         var msg = indent + status + specName + time;
