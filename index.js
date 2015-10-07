@@ -1,4 +1,4 @@
-require('colors')
+require('colors');
 
 var SpecReporter = function(baseReporterDecorator, config, logger, helper, formatError) {
 
@@ -26,47 +26,46 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
     /* Time ranges */
     fast: 20,
     slow: 40
-  }
+  };
 
   // We wish to build on the basic reporter's properties and methods
-  baseReporterDecorator(this)
+  baseReporterDecorator(this);
 
   // We wish to send to the output to the console, and that every message we output will
   // be on a different line
   this.adapters = [function(msg) {
-      process.stdout.write.bind(process.stdout)(msg + "\r\n")
-  }]
+      process.stdout.write.bind(process.stdout)(msg + "\r\n");
+  }];
 
-  this.currentSuite = []
-  this.faildTests   = []
+  this.currentSuite = [];
+  this.faildTests   = [];
 
   /*
   * Templates
   */
-  this.BROWSER_REGISTER = 'USING BROWSER %s\n'
-  this.LOG_SINGLE_BROWSER = 'INFO %s LOG: %s\n'
-  this.BROWSER_COMPLETE = 'TESTS FINISHED: %s SUCCESS, %s SKIPPED, %s FAILED, %s TOTAL, %sms TOTAL TIME\n'
-  this.LATE_REPORT = '\n%s TEST(S) FAILED:\n'
+  this.BROWSER_REGISTER = 'USING BROWSER %s\n';
+  this.LOG_SINGLE_BROWSER = 'INFO %s LOG: %s\n';
+  this.BROWSER_COMPLETE = 'TESTS FINISHED: %s SUCCESS, %s SKIPPED, %s FAILED, %s TOTAL, %sms TOTAL TIME\n';
+  this.LATE_REPORT = '\n%s TEST(S) FAILED:\n';
 
-  this.SUCCESS = cfg.prefix.success + '%s'
-  this.SKIPPED = cfg.prefix.skipped + '%s'
-  this.FAILED  = cfg.prefix.failure + '%s'
+  this.SUCCESS = cfg.prefix.success + '%s';
+  this.SKIPPED = cfg.prefix.skipped + '%s';
+  this.FAILED  = cfg.prefix.failure + '%s';
 
   /* Add color if needed */
   if (cfg.colors) {
-    this.BROWSER_REGISTER   = this.BROWSER_REGISTER.yellow
-    this.LOG_SINGLE_BROWSER = this.LOG_SINGLE_BROWSER.yellow
+    this.BROWSER_REGISTER   = this.BROWSER_REGISTER.yellow;
+    this.LOG_SINGLE_BROWSER = this.LOG_SINGLE_BROWSER.yellow;
     this.BROWSER_COMPLETE   = 'TESTS FINISHED: '.yellow +
       '%s'.green + ' SUCCESS, '.yellow +
       '%s'.grey + ' SKIPPED, '.yellow +
       '%s'.red + ' FAILED, '.yellow +
       '%s'.magenta + ' TOTAL, '.yellow +
-      '%sms'.cyan + ' TOTAL TIME\n'.yellow
-    this.LATE_REPORT        = this.LATE_REPORT.red
-
-    this.SUCCESS = this.SUCCESS.green
-    this.SKIPPED = this.SKIPPED.grey
-    this.FAILED  = this.FAILED.red
+      '%sms'.cyan + ' TOTAL TIME\n'.yellow;
+    this.LATE_REPORT = this.LATE_REPORT.red;
+    this.SUCCESS = this.SUCCESS.green;
+    this.SKIPPED = this.SKIPPED.grey;
+    this.FAILED  = this.FAILED.red;
   }
 
   /*
@@ -79,58 +78,58 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
   *
   */
   this.suiteFormat = function(suite, self) {
-    var indent = "  "
+    var indent = "  ";
     suite.forEach(function(value, index) {
-        if (index >= self.currentSuite.length || self.currentSuite[index] != value) {
-          if (index === 0) self.writeCommonMsg('\n')
+      if (index >= self.currentSuite.length || self.currentSuite[index] != value) {
+        if (index === 0) self.writeCommonMsg('\n');
 
-          self.writeCommonMsg(indent + value)
-          self.currentSuite = []
-        }
-        indent += "  "
+        self.writeCommonMsg(indent + value);
+        self.currentSuite = [];
+      }
+      indent += "  ";
 
-    }, self)
+    }, self);
 
-    self.currentSuite = suite
+    self.currentSuite = suite;
 
-    return { indent: indent, suite: suite }
-  }
+    return { indent: indent, suite: suite };
+  };
 
   /*
   * Format the time that the test wsa running
   */
   this.testTime = function(time) {
-    var result = " (" + time + " ms)"
+    var result = " (" + time + " ms)";
 
     if (cfg.colors) {
       if (time > cfg.fast && time < cfg.slow) {
-        result = result.yellow
+        result = result.yellow;
       } else if (time < cfg.fast) {
-        result = result.green
+        result = result.green;
       } else if (time > cfg.slow) {
-        result = result.red
+        result = result.red;
       }
     }
 
-    return result
-  }
+    return result;
+  };
 
   /*
   * Backtrace the log
   */
   this.backtrace = function(log) {
-    var result = '\n'
+    var result = '\n';
     log.forEach(function(log) {
-        if (cfg.maxLogLines) {
-          log = log.split('\n').slice(0, cfg.maxLogLines).join('\n')
-        }
-        result += '\n' + formatError(log, '\t')
-    })
+      if (cfg.maxLogLines) {
+        log = log.split('\n').slice(0, cfg.maxLogLines).join('\n');
+      }
+      result += '\n' + formatError(log, '\t');
+    });
     if (cfg.colors) {
-      result = result.red
+      result = result.red;
     }
-    return result
-  }
+    return result;
+  };
 
   /*
   * LateReport will display more information about the faild test on the end of the run
@@ -139,24 +138,24 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
   this.lateReport = function() {
     if (this.faildTests.length > 0) {
 
-      this.write(this.LATE_REPORT, this.faildTests.length)
+      this.write(this.LATE_REPORT, this.faildTests.length);
 
       this.faildTests.forEach(function(result) {
 
-          var data = this.suiteFormat(result.suite, this)
-          var indent = data.indent
-          var time = this.testTime(result.time)
+          var data = this.suiteFormat(result.suite, this);
+          var indent = data.indent;
+          var time = this.testTime(result.time);
 
-          var msg = indent + this.FAILED + time
-          msg += this.backtrace(result.log)
+          var msg = indent + this.FAILED + time;
+          msg += this.backtrace(result.log);
 
-          this.writeCommonMsg(msg, result.description)
+          this.writeCommonMsg(msg, result.description);
 
-      }, this)
+      }, this);
 
-      this.faildTests = []
+      this.faildTests = [];
     }
-  }
+  };
 
   /*
   * The launcher initiates tests on the browser ( browser init and browser reconnect )
@@ -179,8 +178,8 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
   *  - disconnectsCount
   */
   this.onBrowserRegister = function(browser) {
-    this.write(this.BROWSER_REGISTER, browser.fullName)
-  }
+    this.write(this.BROWSER_REGISTER, browser.fullName);
+  };
 
   /*
   * Browsers are ready and execution starts
@@ -247,52 +246,50 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
   /* SUCCESS */
 
   this.specSuccess = function(browser, result) {
-    var data = this.suiteFormat(result.suite, this)
-    var indent = data.indent
-    var time = this.testTime(result.time)
+    var data = this.suiteFormat(result.suite, this);
+    var indent = data.indent;
+    var time = this.testTime(result.time);
+    var msg = indent + this.SUCCESS + time;
 
-    var msg = indent + this.SUCCESS + time
-
-    this.writeCommonMsg(msg, result.description)
-  }
+    this.writeCommonMsg(msg, result.description);
+  };
 
   /* SKIPPED */
   this.specSkipped = function(browser, result) {
-    var data = this.suiteFormat(result.suite, this)
-    var indent = data.indent
-    var time = this.testTime(result.time)
+    var data = this.suiteFormat(result.suite, this);
+    var indent = data.indent;
+    var time = this.testTime(result.time);
+    var msg = indent + this.SKIPPED + time;
 
-    var msg = indent + this.SKIPPED + time
-
-    this.writeCommonMsg(msg, result.description)
-  }
+    this.writeCommonMsg(msg, result.description);
+  };
 
   /* FAILURE */
   this.specFailure = function(browser, result) {
-    var data = this.suiteFormat(result.suite, this)
-    var indent = data.indent
-    var time = this.testTime(result.time)
+    var data = this.suiteFormat(result.suite, this);
+    var indent = data.indent;
+    var time = this.testTime(result.time);
+    var msg = indent + this.FAILED + time;
 
-    var msg = indent + this.FAILED + time
     if (cfg.lateReport === false && result.log) {
-      msg += this.backtrace(result.log)
+      msg += this.backtrace(result.log);
     } else {
-      this.faildTests.push(result)
+      this.faildTests.push(result);
     }
 
-    this.writeCommonMsg(msg, result.description)
+    this.writeCommonMsg(msg, result.description);
 
-  }
+  };
 
   /*
   * nothing - this function is just to stup the method and do nothing
   */
-  this.nothing = function() { /* Do nothing */ }
+  this.nothing = function() { /* Do nothing */ };
 
   /* Link function and disabled some kind of reports */
-  this.specSuccess = cfg.suppressSuccess ? this.nothing : this.specSuccess
-  this.specSkipped = cfg.suppressSkipped ? this.nothing : this.specSkipped
-  this.specFailure = cfg.suppressFailure ? this.nothing : this.specFailure
+  this.specSuccess = cfg.suppressSuccess ? this.nothing : this.specSuccess;
+  this.specSkipped = cfg.suppressSkipped ? this.nothing : this.specSkipped;
+  this.specFailure = cfg.suppressFailure ? this.nothing : this.specFailure;
 
   /*
   * finished running tests on a browser, browser disconnect, browser timeout
@@ -300,7 +297,7 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
   this.onBrowserComplete = function(browser) {
 
     if (cfg.lateReport === true) {
-      this.lateReport()
+      this.lateReport();
     }
 
     this.write(
@@ -311,41 +308,41 @@ var SpecReporter = function(baseReporterDecorator, config, logger, helper, forma
       browser.lastResult.failed,
       browser.lastResult.total,
       browser.lastResult.totalTime
-    )
-  }
+    );
+  };
 
   /*
   * the browser encountered an error connecting to server
   */
   this.onBrowserError = function(browser, error) {
-  }
+  };
 
   /*
   * the browser send info to the server
   */
   this.onBrowserLog = function(browser, log, type) {
     if (cfg.colors) {
-      var log = log.cyan
+      log = log.cyan;
     }
-    this.write(this.LOG_SINGLE_BROWSER, browser, type.toUpperCase(), log)
-  }
+    this.write(this.LOG_SINGLE_BROWSER, browser, type.toUpperCase(), log);
+  };
 
   /*
   * finished running on all browsers
   */
   this.onRunComplete = function(browserCollection, results) {
-  }
+  };
 
   /*
   * before exiting Karma
   */
   this.onExit = function(callback) {
     callback();
-  }
-}
+  };
+};
 
-SpecReporter.$inject = ['baseReporterDecorator', 'config', 'logger', 'helper', 'formatError']
+SpecReporter.$inject = ['baseReporterDecorator', 'config', 'logger', 'helper', 'formatError'];
 
 module.exports = {
   'reporter:spec': ['type', SpecReporter]
-}
+};
