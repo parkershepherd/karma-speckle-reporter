@@ -1,7 +1,8 @@
-# karma-spec-reporter-2
+# karma-speckle-reporter
 
-Test reporter, that prints detailed results to console (similar to mocha's spec reporter).
-Based on the `npm install karma-spec-reporter-2` which is based on the `npm install karma-spec-reporter` - but with few changes
+Simple Karma reporter module that allows for greater configuration options than other existing packages.
+
+Based on `karma-spec-reporter-2` which is based on `karma-spec-reporter` which is based on mocha's spec reporter.
 
 # Installation
 
@@ -18,13 +19,13 @@ There are few configuration that you could apply to the reporter.
       reporters: ["spec"],
       specReporter: {
 
-        // When test faild - report it at the end of all tests 
+        // When test(s) fail - report it at the end of all tests 
         lateReport:      true,
 
-        // Max Error log lines to display
+        // Max error log lines to display
         maxLogLines:     5,
 
-        // Don't show faild tests
+        // Don't show failed tests
         suppressFaild:   false,
 
         // Don't show successful tests
@@ -33,12 +34,12 @@ There are few configuration that you could apply to the reporter.
         // Don't show skipped tests
         suppressSkipped: false,
 
-        // Every test that is more slower than the slowest test is mark as slow
+        // Determine which tests will be shown as slow
         slowTestTime: 40,
         fastTestTime: 20
 
       },
-      plugins: ["karma-spec-reporter"],
+      plugins: ["karma-speckle-reporter"],
     ...
 ```
 
