@@ -1,33 +1,24 @@
 {
   "name": "karma-speckle-reporter",
-  "version": "0.3.0",
-  "description": "A port of karma-spec-reporter-2 which is a port of karma-spec-repoter",
+  "version": "0.3.1",
+  "description": "More configurable port of karma-spec-reporter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/parkershepherd/karma-speckle-reporter.git"
+    "url": "git+https://github.com/parkershepherd/karma-speckle-reporter.git"
   },
   "keywords": [
-    "karma-plugin",
-    "reporter"
+    "karma",
+    "reporter",
+    "spec",
   ],
-  "author": {
-    "name": "Parker Shepherd",
-    "email": "me@parkershepherd.com"
-  },
-  "dependencies": {
-    "colors": "~0.6.0"
-  },
-  "peerDependencies": {
-    "karma": ">=0.9"
-  },
+  "author": "Parker Shepherd",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/parkershepherd/karma-speckle-reporter/issues"
   },
-  "homepage": "https://github.com/parkershepherd/karma-speckle-reporter",
-  "directories": {},
+  "homepage": "https://github.com/parkershepherd/karma-speckle-reporter#readme"
 }
