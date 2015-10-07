@@ -1,6 +1,6 @@
 {
   "name": "karma-speckle-reporter",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "A port of karma-spec-reporter-2 which is a port of karma-spec-repoter",
   "main": "index.js",
   "scripts": {
