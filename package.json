@@ -1,25 +1,33 @@
 {
-  "name": "karma-spec-reporter",
-  "version": "0.0.16",
-  "description": "A Karma plugin. Report all spec-results to console (like mocha's spec reporter).",
+  "name": "karma-speckle-reporter",
+  "version": "0.1.0",
+  "description": "A port of karma-spec-reporter-2 which is a port of karma-spec-repoter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mlex/karma-spec-reporter.git"
+    "url": "git://github.com/parkershepherd/karma-speckle-reporter.git"
   },
   "keywords": [
     "karma-plugin",
     "reporter"
   ],
-  "author": "Michael Lex <michael.lex@codecentric.de>",
+  "author": {
+    "name": "Parker Shepherd",
+    "email": "me@parkershepherd.com"
+  },
   "dependencies": {
-    "colors":"~0.6.0"
+    "colors": "~0.6.0"
   },
   "peerDependencies": {
     "karma": ">=0.9"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/parkershepherd/karma-speckle-reporter/issues"
+  },
+  "homepage": "https://github.com/parkershepherd/karma-speckle-reporter",
+  "directories": {},
 }
